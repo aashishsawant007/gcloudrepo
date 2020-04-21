@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicdtest-deploy
+  labels:
+    app: cicdtest-deploy
+spec:
+  replicas: 1
+  minReadySeconds: 1
+  selector:
+    matchLabels:
+      app: cicdtest-pod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+        maxUnavailable: 1
+        maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: cicdtest-pod
+    spec:
+      containers:
+      - name: cicdtest-ctr
+        image: gcr.io/kubernates-sample-project-007/cicdtest:v1
+        ports:
+        - containerPort: 80
